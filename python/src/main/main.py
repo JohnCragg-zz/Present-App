@@ -1,3 +1,6 @@
+from python.src.main.Person import Person
+
+
 def main():
     print("Hello Mark, welcome to the world of development")
     print("To run this class what you need to do is to right click")
@@ -9,6 +12,9 @@ def main():
 
     for number in numbers:
         print 'I have seen %d women who I love today' % number
+
+    mark = Person("mark", "holmes", 23, "bellend")
+    mark.say_hello()
 
 
 if __name__ == '__main__': main()
