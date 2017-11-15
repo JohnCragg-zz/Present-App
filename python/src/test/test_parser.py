@@ -1,5 +1,7 @@
 from unittest import TestCase
-from main import *
+
+from python.src.main.Person import Person
+from python.src.main.parser import Parser
 
 
 class TestParser(TestCase):
@@ -7,6 +9,6 @@ class TestParser(TestCase):
         self.parser = Parser("mark,holmes,23,bellend")
 
     def test_can_parse_a_string_into_a_class(self):
-        actual = parser.create_person()
+        actual = self.parser.create_person()
         expected = Person("mark", "holmes", 23, "bellend")
-        assertEqual(actual, expected)
+        self.assertEqual(actual, expected)
