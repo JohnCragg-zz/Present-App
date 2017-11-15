@@ -16,6 +16,7 @@ def main():
     mark = Person("mark", "holmes", 23, "bellend")
     mark.say_hello()
 
+    print("marks a bellend")
 
 
 if __name__ == '__main__': main()
