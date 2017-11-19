@@ -3,4 +3,5 @@ class Parser(object):
         self.string_to_parse = string_to_parse
 
     def create_person(self):
-        pass
+        thing = self.string_to_parse.split(",")
+        self.Person = Person(thing[0],thing[1],thing[2],thing[3])

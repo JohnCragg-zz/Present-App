@@ -12,3 +12,5 @@ class TestParser(TestCase):
         actual = self.parser.create_person()
         expected = Person("mark", "holmes", 23, "bellend")
         self.assertEqual(actual, expected)
+
+print("herpy derp")

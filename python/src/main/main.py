@@ -11,7 +11,7 @@ def main():
     numbers = range(0, 100, 10)
 
     for number in numbers:
-        print 'I have seen %d women who I love today' % number
+        print('I have seen %d women who I love today' % number)
 
     mark = Person("mark", "holmes", 23, "bellend")
     mark.say_hello()

@@ -6,4 +6,4 @@ class Person(object):
         self.description = description
 
     def say_hello(self):
-        print "hello %s %s !" % (self.first_name, self.second_name)
+        print ("hello %s %s !" % (self.first_name, self.second_name))
