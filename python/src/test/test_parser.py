@@ -11,6 +11,9 @@ class TestParser(TestCase):
     def test_can_parse_a_string_into_a_class(self):
         actual = self.parser.create_person()
         expected = Person("mark", "holmes", 23, "bellend")
-        self.assertEqual(actual, expected)
+        self.assertEqual(actual.first_name, expected.first_name)
+        self.assertEqual(actual.second_name, expected.second_name)
+        self.assertEqual(actual.age, expected.age)
+        self.assertEqual(actual.description, expected.description)
 
 print("herpy derp")
