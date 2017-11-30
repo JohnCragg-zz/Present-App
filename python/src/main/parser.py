@@ -6,5 +6,5 @@ class Parser(object):
         self.string_to_parse = string_to_parse
 
     def create_person(self):
-        (personal_id, email, first_name, second_name) = self.string_to_parse.split(",")
-        return Person(personal_id, email, first_name, second_name)
+        (personal_id, email, first_name, last_name) = self.string_to_parse.split(",")
+        return Person(personal_id, email, first_name, last_name)
