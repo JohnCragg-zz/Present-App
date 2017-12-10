@@ -16,6 +16,7 @@ def create_connection(db_file):
 
         def data_entry():
             c.execute("INSERT INTO Person VALUES(1, 'mark@aol.com', 'Mark', 'Holmes')")
+            c.execute("INSERT INTO Person VALUES(2, 'john@aol.com', 'John', 'Cragg')")
             conn.commit()
             c.close()
 
