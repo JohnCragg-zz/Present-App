@@ -42,7 +42,6 @@ def populate_table(lst, conn, c, insert_method):
     for element in lst:
         insert_method(c, conn, element)
         print("Inserted element, %s, into the database" % element)
-    c.close()
 
 
 def create_connection():
