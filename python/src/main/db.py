@@ -44,16 +44,6 @@ def populate_table(lst, conn, c, insert_method):
         print("Inserted element, %s, into the database" % element)
 
 
-def create_connection():
-    c = conn.cursor()
-    create_person_table(c)
-    create_item_table(c)
-
-    populate_table(people_mark_cares_about, conn, c, insert_person)
-    populate_table(clarkes_xmas_list, conn, c, insert_item)
-    return c
-
-
 def read_person_table(c):
     c.execute("SELECT * FROM Person")
     for row in c:
@@ -69,7 +59,13 @@ def read_item_table(c):
 if __name__ == '__main__':
     try:
         conn = sqlite3.connect("person_and_item.db")
-        cursor = create_connection()
+        cursor = conn.cursor()
+        create_person_table(cursor)
+        create_item_table(cursor)
+
+        populate_table(people_mark_cares_about, conn, cursor, insert_person)
+        populate_table(clarkes_xmas_list, conn, cursor, insert_item)
+
         read_person_table(cursor)
         read_item_table(cursor)
     except Error as e:
