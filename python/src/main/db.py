@@ -60,6 +60,7 @@ if __name__ == '__main__':
     try:
         conn = sqlite3.connect("person_and_item.db")
         cursor = conn.cursor()
+
         create_person_table(cursor)
         create_item_table(cursor)
 
