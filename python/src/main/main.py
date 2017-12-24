@@ -13,7 +13,7 @@ def main():
     for number in numbers:
         print('I have seen %d women who I love today' % number)
 
-    cregg = Person(1, "ledge@sheg.com", "jonald", "cregg")
+    cregg = Person("ledge@sheg.com", "jonald", "cregg")
     cregg.say_hello()
 
     print("marks a bellend")
