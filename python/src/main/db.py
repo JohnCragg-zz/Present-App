@@ -1,7 +1,5 @@
-import sqlite3
-from sqlite3 import Error
-from python.src.main.Person import Person
 from python.src.main.Item import Item
+from python.src.main.Person import Person
 from python.src.main.parser import Parser
 
 
@@ -9,6 +7,7 @@ class DB(object):
     def __init__(self, cursor, conn):
         self.cursor = cursor
         self.conn = conn
+        conn.text_factory = str
 
     def create_person_table(self):
         self.cursor.execute(
@@ -32,7 +31,7 @@ class DB(object):
 
     def populate_table(self, lst, insert_method):
         for element in lst:
-            insert_method(self.cursor, self.conn, element)
+            insert_method(element)
             print("Inserted element, %s, into the database" % element)
 
     def read_table(self, title):
@@ -48,32 +47,12 @@ class DB(object):
             print("Table not found.")
 
     def get_persons_items(self, email):
-        self.cursor.execute("SELECT * FROM Item WHERE person_email = '%s'" % email)
-        for row in self.cursor:
-            print(row)
+        return self.cursor.execute("SELECT * FROM Item WHERE person_email = '%s'" % email)
 
     def create_item_from_table(self, email):
         self.cursor.execute("SELECT * FROM Item WHERE person_email = '%s'" % email)
-        list_of_items = []
+        items = []
         for row in self.cursor:
-            item_from_row = Parser(str(row)).create_item()
-            list_of_items.append(item_from_row)
-        for obj in list_of_items:
-            print(obj.name)
-
-
-if __name__ == '__main__':
-    try:
-        conn = sqlite3.connect("person_and_item.db")
-        cursor = conn.cursor()
-        db = DB(cursor, conn)
-
-        db.create_person_table()
-        db.create_item_table()
-
-        db.get_persons_items( "NotClarkesFresher@warwick.ac.uk")
-        db.create_item_from_table("NotClarkesFresher@warwick.ac.uk")
-    except Error as e:
-        print(e)
-    finally:
-        conn.close()
+            item = Parser(row).create_item()
+            items.append(item)
+        return items
