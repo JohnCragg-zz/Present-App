@@ -1,3 +1,7 @@
+import logging
+from sqlite3 import IntegrityError
+
+
 class DB(object):
     def __init__(self, cursor, conn):
         self.cursor = cursor
@@ -8,16 +12,21 @@ class DB(object):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS Person(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT)"
         )
+        logging.info("Person table created")
 
     def create_item_table(self):
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS Item(person_email TEXT, name TEXT, price REAL, priority INT, hyperlink TEXT)"
         )
+        logging.info("Item table created")
 
     def insert_person(self, person):
-        self.cursor.execute("INSERT INTO Person VALUES('%s', '%s', '%s')"
-                            % (person.email, person.first_name, person.last_name))
-        self.conn.commit()
+        try:
+            self.cursor.execute("INSERT INTO Person VALUES('%s', '%s', '%s')"
+                                % (person.email, person.first_name, person.last_name))
+            self.conn.commit()
+        except IntegrityError:
+            logging.error("Key '%s' was not unique and hasn't been entered into the db" % person.email)
 
     def insert_item(self, item):
         self.cursor.execute("INSERT INTO Item VALUES('%s', '%s', '%d', '%d', '%s')"
@@ -27,7 +36,7 @@ class DB(object):
     def populate_table(self, lst, insert_method):
         for element in lst:
             insert_method(element)
-            print("Inserted element, %s, into the database" % element)
+            logging.info("Inserted element, %s, into the database" % element)
 
     def get_items(self, email):
         items = []
