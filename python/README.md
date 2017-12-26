@@ -13,3 +13,9 @@ Install virtualenv. $ sudo pip install --upgrade virtualenv
 
 - FLASK , used for the api
 -- https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
+
+
+#To run
+#running on http://127.0.0.1:5000/
+#populate db on using app endpoints
+
