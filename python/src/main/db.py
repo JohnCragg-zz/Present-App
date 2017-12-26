@@ -1,8 +1,3 @@
-from python.src.main.Item import Item
-from python.src.main.Person import Person
-from python.src.main.parser import Parser
-
-
 class DB(object):
     def __init__(self, cursor, conn):
         self.cursor = cursor
@@ -34,25 +29,16 @@ class DB(object):
             insert_method(element)
             print("Inserted element, %s, into the database" % element)
 
-    def read_table(self, title):
-        if title == Person:
-            self.cursor.execute("SELECT * FROM Person")
-            for row in self.cursor:
-                print(row)
-        elif title == Item:
-            self.cursor.execute("SELECT * FROM Item")
-            for row in self.cursor:
-                print(row)
-        else:
-            print("Table not found.")
-
-    def get_persons_items(self, email):
-        return self.cursor.execute("SELECT * FROM Item WHERE person_email = '%s'" % email)
-
-    def create_item_from_table(self, email):
-        self.cursor.execute("SELECT * FROM Item WHERE person_email = '%s'" % email)
+    def get_items(self, email):
         items = []
-        for row in self.cursor:
-            item = Parser(row).create_item()
-            items.append(item)
+        rows = self.cursor.execute("SELECT * FROM Item WHERE person_email = '%s'" % email)
+        for row in rows:
+            items += row
         return items
+
+    def get_person(self, email):
+        person = []
+        rows = self.cursor.execute("SELECT * FROM Person WHERE person_email = '%s'" % email)
+        for row in rows:
+            person += row
+        return person
