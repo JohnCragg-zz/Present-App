@@ -1,12 +1,11 @@
 import logging
 import sqlite3
-
-from flask import Flask
 from flask import jsonify, abort
-
 from python.src.main.db import DB
 from python.src.main.parser import create_person, create_item
 from python.src.main.Person import Person
+from flask_restplus import Resource, Api
+from flask import Flask, request
 
 #
 logging.basicConfig(filename='present_app.log', level=logging.DEBUG)
@@ -16,20 +15,34 @@ db = DB(cursor, conn)
 db.create_person_table()
 db.create_item_table()
 
-
 app = Flask(__name__)
+api = Api(app)
+
+todos = {}
 
 
-@app.route('/')
-def hello_world():
-    return 'boo, World!'
+@api.route('/<string:todo_id>')
+class TodoSimple(Resource):
+    def get(self, todo_id):
+        return {todo_id: todos[todo_id]}
+
+    def put(self, todo_id):
+        todos[todo_id] = request.form['data']
+        return {todo_id: todos[todo_id]}
 
 
-@app.route('/present/api/v1/person/<string:email>')
-def put_person(email):
-    # db.insert_person(Person(email, "JOHN", "CRAGG"))
-    logging.info("Put person with email '%s'" % email)
-    return "cat %s" % email
+@api.route('/times_five/<int:number>')
+class Times5(Resource):
+    def get(self, number):
+        return jsonify({'number': number * 5})
+
+
+@api.route('/present/api/v1/person/<string:email>')
+class SignUp(Resource):
+    def put(self, email):
+        # db.insert_person(Person(email, "JOHN", "CRAGG"))
+        logging.info("Put person with email '%s'" % email)
+        return 200
 
 
 # @app.route('/present/api/v1/person/<string:email>', methods=['GET'])
@@ -58,5 +71,5 @@ def put_person(email):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=9000, host='127.0.0.1')
+    app.run(debug=True)
     # conn.close()
