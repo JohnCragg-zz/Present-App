@@ -22,6 +22,7 @@ class DB(object):
 
     def insert_person(self, person):
         try:
+            print(person.email)
             self.cursor.execute("INSERT INTO Person VALUES('%s', '%s', '%s')"
                                 % (person.email, person.first_name, person.last_name))
             self.conn.commit()
@@ -47,7 +48,7 @@ class DB(object):
 
     def get_person(self, email):
         person = []
-        rows = self.cursor.execute("SELECT * FROM Person WHERE person_email = '%s'" % email)
+        rows = self.cursor.execute("SELECT * FROM Person WHERE email = '%s'" % email)
         for row in rows:
             person += row
         return person
