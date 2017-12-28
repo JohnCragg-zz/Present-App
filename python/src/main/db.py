@@ -52,3 +52,7 @@ class DB(object):
         for row in rows:
             person += row
         return person
+
+    def delete_person(self, email):
+        self.cursor.execute("DELETE FROM Person WHERE email = '%s'" % email)
+        self.conn.commit()

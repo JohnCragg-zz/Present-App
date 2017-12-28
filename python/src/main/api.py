@@ -4,6 +4,7 @@ from flask import jsonify, abort
 from python.src.main.db import DB
 from python.src.main.parser import create_person, create_item
 from python.src.main.Person import Person
+from python.src.main.Item import Item
 from flask_restplus import Resource, Api
 from flask import Flask, request
 
@@ -35,7 +36,18 @@ class SignUp(Resource):
 @api.route('/api/v1/person/<string:email>')
 class People(Resource):
     def delete(self, email):
-        return 200
+        conn = sqlite3.connect("person_and_item.db")
+        cursor = conn.cursor()
+        db = DB(cursor, conn)
+        person = db.get_person(email)
+        if len(person) == 0:
+            logging.error("Couldn't find person with email '%s'" % email)
+            abort(404)
+        else:
+            db.delete_person(email)
+            logging.info("User with email id %s has been deleted" % email)
+            return 410
+        conn.close()
 
     def get(self, email):
         conn = sqlite3.connect("person_and_item.db")
@@ -51,9 +63,17 @@ class People(Resource):
             return jsonify({'person': create_person(person).serialize()})
 
 
-# @api.route('/api/v1/items/<string:email>')
-# class Item(Resource):
-#     def put(self, ):
+@api.route('/api/v1/items/<string:person_email>/<string:name><float:price><int:priority><string:hyperlink>')
+class Items(Resource):
+     def put(self, person_email, name, price, priority, hyperlink):
+        conn = sqlite3.connect("person_and_item.db")
+        cursor = conn.cursor()
+        db = DB(cursor, conn)
+        item = Item(person_email, name, price, priority, hyperlink)
+        db.insert_item(item)
+        logging.info("Put item '%s'" % name)
+        conn.close()
+        return 200
 
 
 if __name__ == '__main__':
