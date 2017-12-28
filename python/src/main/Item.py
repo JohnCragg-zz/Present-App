@@ -6,8 +6,12 @@ class Item(object):
         self.priority = priority
         self.hyperlink = hyperlink
 
-    def print_price(self):
-        print("The price of this item is %s big ones" % self.price)
-
-
+    def serialize(self):
+        return {
+            'person_email': self.person_email,
+            'name': self.name,
+            'price': self.price,
+            'priority': self.priority,
+            'hyperlink': self.hyperlink
+        }
 
