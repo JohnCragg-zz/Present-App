@@ -25,7 +25,6 @@ class SignUp(Resource):
         conn = sqlite3.connect("person_and_item.db")
         cursor = conn.cursor()
         db = DB(cursor, conn)
-        print(email, first_name, last_name)
         person = Person(email, first_name, last_name)
         db.insert_person(person)
         logging.info("Put person with email '%s'" % email)
@@ -58,5 +57,4 @@ class People(Resource):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
-    # conn.close()
+    app.run(debug=True)
