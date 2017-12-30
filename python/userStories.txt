@@ -1,0 +1,72 @@
+=======================================================
+=
+=                  USER STORIES
+=
+=======================================================
+
+As a user
+I want to be able to create a list of presents
+So that people can see what I would like
+
+As a user
+I want to be able to change my list of items
+So that I can change what I would like
+
+As a user
+I want to be able to create a group of people
+So that we can share our ideas for presents
+
+As a member of a group
+I want to be able to see the list of presents for everyone else in that group
+So that I can see what they would like to be bought
+
+As a member of a group with another user A
+I want to be able to have a group chat with everyone except A
+So that I can discuss with the other members of the group what we are buying for A
+
+As a user
+I want to have my personal information visible to users in my groups
+So that people who I don't know cannot see the information
+
+As a member of a group with another user A
+I want to be able to see the list of A's presents alongside the group chat
+So that I can see which presents have already been bought for A
+
+As a user
+I want to be able to store my purchases
+So that I know how much I have left to spend
+
+As a uses
+I want to be able to set a spending budget
+So that I can judge which presents to buy
+
+As a user with friend A
+I want to be able
+
+As a user
+I want to be able to use the app alongside other users
+So that I get a smooth user experience
+
+=======================================================
+=
+=                  TECH STORIES
+=
+=======================================================
+
+
+As a developer
+I want to have a server
+So that I can run the app in production
+
+As a developer
+I want to be able to deploy the app to different environments
+So that I can control which version of my code goes into production
+
+As a developer
+I want my app to be secure
+So that only developers have access to users data
+
+As a developer
+I want to be able to see metrics of the app
+So I can diagnose potential problems quickly
+
