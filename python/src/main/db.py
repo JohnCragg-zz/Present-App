@@ -30,7 +30,7 @@ class DB(object):
             logging.error("Key '%s' was not unique and hasn't been entered into the db" % person.email)
 
     def insert_item(self, item):
-        self.cursor.execute("INSERT INTO Item VALUES('%s', '%s', '%d', '%d', '%s')"
+        self.cursor.execute("INSERT INTO Item VALUES('%s', '%s', '%s', '%d', '%s')"
                             % (item.person_email, item.name, item.price, item.priority, item.hyperlink))
         self.conn.commit()
 
@@ -46,6 +46,15 @@ class DB(object):
             items += row
         return items
 
+    def get_specific_item(self, email, name):
+        items = []
+        rows = self.cursor.execute("SELECT * FROM ITEM WHERE person_email = '%s' AND name = '%s'"
+                            % (email, name))
+        for row in rows:
+            items += row
+        return items
+
+
     def get_person(self, email):
         person = []
         rows = self.cursor.execute("SELECT * FROM Person WHERE email = '%s'" % email)
@@ -55,4 +64,9 @@ class DB(object):
 
     def delete_person(self, email):
         self.cursor.execute("DELETE FROM Person WHERE email = '%s'" % email)
+        self.conn.commit()
+
+    def delete_item(self, person_email, name):
+        self.cursor.execute("DELETE FROM Item WHERE name = '%s' AND person_email = '%s'"
+                            % (name, person_email))
         self.conn.commit()

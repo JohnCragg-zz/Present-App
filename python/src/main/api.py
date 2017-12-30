@@ -63,7 +63,7 @@ class People(Resource):
             return jsonify({'person': create_person(person).serialize()})
 
 
-@api.route('/api/v1/items/<string:person_email>/<string:name><float:price><int:priority><string:hyperlink>')
+@api.route('/api/v1/items/<string:person_email>/<string:name>/<string:price>/<int:priority>/<string:hyperlink>')
 class Items(Resource):
      def put(self, person_email, name, price, priority, hyperlink):
         conn = sqlite3.connect("person_and_item.db")
@@ -74,6 +74,24 @@ class Items(Resource):
         logging.info("Put item '%s'" % name)
         conn.close()
         return 200
+
+@api.route('/api/v1/items/<string:person_email>/<string:name>')
+class Itemz(Resource):
+     def delete(self, person_email, name):
+         conn = sqlite3.connect("person_and_item.db")
+         cursor = conn.cursor()
+         db = DB(cursor, conn)
+         items = db.get_specific_item(person_email, name)
+         if len(items) == 0:
+             logging.info("Couldn't find item called '%s' listed by user with email id '%s'"
+                          % (name, person_email))
+             abort(404)
+         else:
+             db.delete_item(person_email, name)
+             logging.info("Item called '%s' from user with email id '%s' has been deleted"
+                          % (name, person_email))
+             return 410
+         conn.close()
 
 
 if __name__ == '__main__':
