@@ -37,9 +37,9 @@ class TestDB(TestCase):
         returned_people = self.db.get_person('jc@jc.com')
         self.assertEqual(expected, returned_people)
 
-    def test_can_get_specific_item(self):
+    def test_can_get_item(self):
         self.db.populate_table(marks_friends, self.db.insert_person)
         self.db.populate_table(items, self.db.insert_item)
         expected = ["NotClarkesFresher@warwick.ac.uk", "Coolbrand Bike", 150, 3, "www.bikes.com"]
-        returned_item = self.db.get_specific_item("NotClarkesFresher@warwick.ac.uk", "Coolbrand Bike")
+        returned_item = self.db.get_item("NotClarkesFresher@warwick.ac.uk", "Coolbrand Bike")
         self.assertEqual(returned_item, expected)

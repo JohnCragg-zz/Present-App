@@ -46,14 +46,13 @@ class DB(object):
             items += row
         return items
 
-    def get_specific_item(self, email, name):
+    def get_item(self, email, name):
         items = []
         rows = self.cursor.execute("SELECT * FROM ITEM WHERE person_email = '%s' AND name = '%s'"
                             % (email, name))
         for row in rows:
             items += row
         return items
-
 
     def get_person(self, email):
         person = []
@@ -64,9 +63,17 @@ class DB(object):
 
     def delete_person(self, email):
         self.cursor.execute("DELETE FROM Person WHERE email = '%s'" % email)
+        self.cursor.execute("DELETE FROM Item WHERE person_email = '%s" % email)
+        self.conn.commit()
+
+    def delete_all_persons_items(self, person_email):
+        self.cursor.execute("DELETE FROM Item WHERE person_email = '%s'"
+                            % person_email)
         self.conn.commit()
 
     def delete_item(self, person_email, name):
-        self.cursor.execute("DELETE FROM Item WHERE name = '%s' AND person_email = '%s'"
-                            % (name, person_email))
+        self.cursor.execute("DELETE FROM Item WHERE person_email = '%s' AND name = '%s'"
+                            % (person_email, name))
         self.conn.commit()
+
+

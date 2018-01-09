@@ -2,7 +2,7 @@ import logging
 import sqlite3
 from flask import jsonify, abort
 from python.src.main.db import DB
-from python.src.main.parser import create_person, create_item
+from python.src.main.parser import create_person, create_item, parse_list_of_items
 from python.src.main.Person import Person
 from python.src.main.Item import Item
 from flask_restplus import Resource, Api
@@ -45,8 +45,7 @@ class People(Resource):
             abort(404)
         else:
             db.delete_person(email)
-            logging.info("User with email id %s has been deleted" % email)
-            return 410
+            logging.info("User with email id %s and their data have been deleted" % email)
         conn.close()
 
     def get(self, email):
@@ -70,18 +69,21 @@ class Items(Resource):
         cursor = conn.cursor()
         db = DB(cursor, conn)
         item = Item(person_email, name, price, priority, hyperlink)
-        db.insert_item(item)
-        logging.info("Put item '%s'" % name)
+        duplicate_items = db.get_item(person_email, name)
+        if len(duplicate_items) > 0:
+            logging.info("%s has already listed item %s" % (person_email, name))
+            abort(400)
+        else:
+            db.insert_item(item)
+            logging.info("Put item '%s'" % name)
+            return 200
         conn.close()
-        return 200
 
-@api.route('/api/v1/items/<string:person_email>/<string:name>')
-class Itemz(Resource):
-     def delete(self, person_email, name):
+     def delete(self, person_email, name, price, priority, hyperlink):
          conn = sqlite3.connect("person_and_item.db")
          cursor = conn.cursor()
          db = DB(cursor, conn)
-         items = db.get_specific_item(person_email, name)
+         items = db.get_item(person_email, name)
          if len(items) == 0:
              logging.info("Couldn't find item called '%s' listed by user with email id '%s'"
                           % (name, person_email))
@@ -90,9 +92,22 @@ class Itemz(Resource):
              db.delete_item(person_email, name)
              logging.info("Item called '%s' from user with email id '%s' has been deleted"
                           % (name, person_email))
-             return 410
          conn.close()
 
+@api.route('/api/v1/items/<string:person_email>')
+class Items(Resource):
+     def get(self, person_email):
+         conn = sqlite3.connect("person_and_item.db")
+         cursor = conn.cursor()
+         db = DB(cursor, conn)
+         all_items = db.get_items(person_email)
+         conn.close()
+         parsed_items = list(parse_list_of_items(all_items))
+         serialized_items = []
+         for row in parsed_items:
+             serialized_items.append(create_item(row).serialize())
+         logging.info("Displayed items listed by %s" % person_email)
+         return jsonify(items = serialized_items)
 
 if __name__ == '__main__':
     app.run(debug=True)
