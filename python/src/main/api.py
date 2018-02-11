@@ -22,7 +22,7 @@ api = Api(app)
 
 @api.route('/api/v1/person/<string:email>/<string:first_name>/<string:last_name>/')
 class SignUp(Resource):
-    def put(self, email, first_name, last_name):
+    def post(self, email, first_name, last_name):
         conn = sqlite3.connect("person_and_item.db")
         cursor = conn.cursor()
         db = DB(cursor, conn)
