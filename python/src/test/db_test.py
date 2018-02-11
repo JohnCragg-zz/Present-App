@@ -6,7 +6,8 @@ from python.src.main.Person import Person
 from python.src.main.db import DB
 
 clarke = Person("NotClarkesFresher@warwick.ac.uk", "Clarke", "Clarkson")
-marks_friends = [clarke]
+jonald = Person("jc@jc.com", "Jonald", "Cregg")
+marks_friends = [clarke, jonald]
 bike = Item("NotClarkesFresher@warwick.ac.uk", "Coolbrand Bike", 150, 3, "www.bikes.com")
 items = [bike]
 
@@ -27,3 +28,18 @@ class TestDB(TestCase):
         expected = ["NotClarkesFresher@warwick.ac.uk", "Coolbrand Bike", 150, 3, "www.bikes.com"]
         created_items = self.db.get_items("NotClarkesFresher@warwick.ac.uk")
         self.assertEqual(created_items, expected)
+
+    def test_can_delete_entry(self):
+        self.db.populate_table(marks_friends, self.db.insert_person)
+        self.db.populate_table(items, self.db.insert_item)
+        self.db.delete_person('jc@jc.com')
+        expected = []
+        returned_people = self.db.get_person('jc@jc.com')
+        self.assertEqual(expected, returned_people)
+
+    def test_can_get_item(self):
+        self.db.populate_table(marks_friends, self.db.insert_person)
+        self.db.populate_table(items, self.db.insert_item)
+        expected = ["NotClarkesFresher@warwick.ac.uk", "Coolbrand Bike", 150, 3, "www.bikes.com"]
+        returned_item = self.db.get_item("NotClarkesFresher@warwick.ac.uk", "Coolbrand Bike")
+        self.assertEqual(returned_item, expected)
