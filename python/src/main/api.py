@@ -8,7 +8,7 @@ from python.src.main.Item import Item
 from flask_restplus import Resource, Api
 from flask import Flask, request
 
-#
+
 logging.basicConfig(filename='present_app.log', level=logging.DEBUG)
 conn = sqlite3.connect("person_and_item.db")
 cursor = conn.cursor()
@@ -20,9 +20,9 @@ app = Flask(__name__)
 api = Api(app)
 
 
-@api.route('/api/v1/person/<string:email>/<string:first_name>/<string:last_name>')
+@api.route('/api/v1/person/<string:email>/<string:first_name>/<string:last_name>/')
 class SignUp(Resource):
-    def put(self, email, first_name, last_name):
+    def post(self, email, first_name, last_name):
         conn = sqlite3.connect("person_and_item.db")
         cursor = conn.cursor()
         db = DB(cursor, conn)

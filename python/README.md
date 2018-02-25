@@ -20,4 +20,11 @@ Install pip install flask-restplus
 # To run
 # running on http://127.0.0.1:5000/
 # Go to http://127.0.0.1:5000/ to see the api documentation provided by swagger ui
+#
+#  WHOLE STACK
+#  -----------
+#  To view db  run sqlitebrowser locally and open the db person_and_item.db
+#  Run the main method at the bottom of the api file
+#  Input data in from the various html files in your browser
+
 
